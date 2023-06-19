@@ -1,4 +1,4 @@
-package rs.ac.metropolitan.projekat
+package rs.ac.metropolitan.projekat.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

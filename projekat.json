@@ -112,14 +112,14 @@
       "id": "4wki",
       "name": "users",
       "documentation": "",
-      "value": "{\r\n  \"users\": [\r\n    {\r\n      \"username\": \"john_doe\",\r\n      \"email\": \"john.doe@example.com\",\r\n      \"password\": \"password123\"\r\n    },\r\n    {\r\n      \"username\": \"jane_smith\",\r\n      \"email\": \"jane.smith@example.com\",\r\n      \"password\": \"password456\"\r\n    },\r\n    {\r\n      \"username\": \"alexander\",\r\n      \"email\": \"alexander@example.com\",\r\n      \"password\": \"password789\"\r\n    }\r\n  ]\r\n}"
+      "value": "[\r\n  {\r\n    \"username\": \"administrator\",\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"admin123\",\r\n    \"role\": \"admin\"\r\n  },\r\n  {\r\n    \"username\": \"jane_smith\",\r\n    \"email\": \"jane.smith@example.com\",\r\n    \"password\": \"password456\",\r\n    \"role\": \"user\"\r\n  },\r\n  {\r\n    \"username\": \"alexander\",\r\n    \"email\": \"alexander@example.com\",\r\n    \"password\": \"password789\",\r\n    \"role\": \"user\"\r\n  }\r\n]\r\n"
     },
     {
       "uuid": "1cf90d1a-1f6c-4941-a7d5-595a6a9f5739",
       "id": "zagx",
       "name": "movies",
       "documentation": "",
-      "value": "{\n  \"movies\": [\n    {\n      \"id\": \"{{faker 'datatype.uuid'}}\",\n      \"title\": \"Movie 1\",\n      \"genre\": \"Action\",\n      \"duration\": \"120 minutes\",\n      \"description\": \"Description for Movie 1\",\n      \"main_actor\": \"Actor 1\",\n      \"date\": \"2023-06-18\",\n      \"time\": \"19:00\"\n    },\n    {\n      \"id\": \"{{faker 'datatype.uuid'}}\",\n      \"title\": \"Movie 2\",\n      \"genre\": \"Comedy\",\n      \"duration\": \"90 minutes\",\n      \"description\": \"Description for Movie 2\",\n      \"main_actor\": \"Actor 2\",\n      \"date\": \"2023-06-19\",\n      \"time\": \"15:30\"\n    },\n    {\n      \"id\": \"{{faker 'datatype.uuid'}}\",\n      \"title\": \"Movie 3\",\n      \"genre\": \"Drama\",\n      \"duration\": \"105 minutes\",\n      \"description\": \"Description for Movie 3\",\n      \"main_actor\": \"Actor 3\",\n      \"date\": \"2023-06-20\",\n      \"time\": \"20:15\"\n    }\n  ]\n}"
+      "value": "[\n  {\n    \"id\": \"{{faker 'datatype.uuid'}}\",\n    \"title\": \"Movie 1\",\n    \"genre\": \"Action\",\n    \"duration\": \"120 minutes\",\n    \"description\": \"Description for Movie 1\",\n    \"main_actor\": \"Actor 1\",\n    \"date\": \"2023-06-18\",\n    \"time\": \"19:00\"\n  },\n  {\n    \"id\": \"{{faker 'datatype.uuid'}}\",\n    \"title\": \"Movie 2\",\n    \"genre\": \"Comedy\",\n    \"duration\": \"90 minutes\",\n    \"description\": \"Description for Movie 2\",\n    \"main_actor\": \"Actor 2\",\n    \"date\": \"2023-06-19\",\n    \"time\": \"15:30\"\n  },\n  {\n    \"id\": \"{{faker 'datatype.uuid'}}\",\n    \"title\": \"Movie 3\",\n    \"genre\": \"Drama\",\n    \"duration\": \"105 minutes\",\n    \"description\": \"Description for Movie 3\",\n    \"main_actor\": \"Actor 3\",\n    \"date\": \"2023-06-20\",\n    \"time\": \"20:15\"\n  }\n]\n"
     }
   ]
 }
