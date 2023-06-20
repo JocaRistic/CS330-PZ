@@ -5,6 +5,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import rs.ac.metropolitan.projekat.common.Constants
 import rs.ac.metropolitan.projekat.common.models.Movie
 import rs.ac.metropolitan.projekat.common.models.User
@@ -13,7 +14,7 @@ interface ApiService {
 
     @GET(Constants.USERS_URL)
     suspend fun getUsers(): List<User>
-
+    
     @POST(Constants.USERS_URL)
     suspend fun addUser(@Body user: User)
 
