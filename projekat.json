@@ -112,7 +112,7 @@
       "id": "4wki",
       "name": "users",
       "documentation": "",
-      "value": "[\r\n  {\r\n    \"username\": \"administrator\",\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"admin123\",\r\n    \"role\": \"admin\"\r\n  },\r\n  {\r\n    \"username\": \"jane_smith\",\r\n    \"email\": \"jane.smith@example.com\",\r\n    \"password\": \"password456\",\r\n    \"role\": \"user\"\r\n  },\r\n  {\r\n    \"username\": \"alexander\",\r\n    \"email\": \"alexander@example.com\",\r\n    \"password\": \"password789\",\r\n    \"role\": \"user\"\r\n  }\r\n]\r\n"
+      "value": "[\r\n  {\r\n    \"id\": \"{{faker 'datatype.uuid'}}\",\r\n    \"username\": \"administrator\",\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"admin123\",\r\n    \"role\": \"admin\"\r\n  },\r\n  {\r\n    \"id\": \"{{faker 'datatype.uuid'}}\",\r\n    \"username\": \"jane_smith\",\r\n    \"email\": \"jane.smith@example.com\",\r\n    \"password\": \"password456\",\r\n    \"role\": \"user\"\r\n  },\r\n  {\r\n    \"id\": \"{{faker 'datatype.uuid'}}\",\r\n    \"username\": \"alexander\",\r\n    \"email\": \"alexander@example.com\",\r\n    \"password\": \"password789\",\r\n    \"role\": \"user\"\r\n  }\r\n]\r\n"
     },
     {
       "uuid": "1cf90d1a-1f6c-4941-a7d5-595a6a9f5739",

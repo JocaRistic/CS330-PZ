@@ -14,12 +14,12 @@ interface ApiService {
 
     @GET(Constants.USERS_URL)
     suspend fun getUsers(): List<User>
-    
+
     @POST(Constants.USERS_URL)
     suspend fun addUser(@Body user: User)
 
-    @DELETE(Constants.USERS_URL + "/{username}")
-    suspend fun deleteUser(@Path ("username") username: String)
+    @DELETE(Constants.USERS_URL + "/{id}")
+    suspend fun deleteUser(@Path ("id") id: String)
 
     @GET(Constants.MOVIES_URL)
     suspend fun getMovies(): List<Movie>
