@@ -46,6 +46,14 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") }
+<<<<<<< HEAD
+=======
+//            keyboardOptions = KeyboardOptions(
+//                keyboardType = KeyboardType.Email
+//            ),
+//            isError = !isEmailValid(email),
+//            visualTransformation = VisualTransformation.None
+>>>>>>> 5c306112aad41453196195e8ca085da53ede2786
         )
         TextField(
             value = password,
@@ -65,9 +73,12 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                 } else {
                     val user = User(email = email, password = password, username = username, role = "user", id = UUID.randomUUID().toString())
                     vm.registerUser(user)
+<<<<<<< HEAD
                     if (!vm.registrovan.value){
                         Toast.makeText(context, "Uneti username je zauzet.", Toast.LENGTH_LONG).show()
                     }
+=======
+>>>>>>> 5c306112aad41453196195e8ca085da53ede2786
                 }
 
             }
