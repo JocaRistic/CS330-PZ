@@ -9,7 +9,7 @@ import rs.ac.metropolitan.projekat.common.models.User
 
 @Database(
     entities = [User::class, Movie::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class BazaPodataka: RoomDatabase() {
@@ -31,7 +31,7 @@ abstract class BazaPodataka: RoomDatabase() {
                     context.applicationContext,
                     BazaPodataka::class.java,
                     "bazapodataka"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

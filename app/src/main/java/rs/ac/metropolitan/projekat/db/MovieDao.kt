@@ -15,10 +15,10 @@ interface MovieDao {
     suspend fun addAllMovies(movies: List<Movie>)
 
     @Query("SELECT * FROM movie_table")
-    suspend fun getAllMovies(): LiveData<List<Movie>>
+    fun getAllMovies(): LiveData<List<Movie>>
 
     @Query("SELECT * FROM movie_table WHERE id == :id")
-    suspend fun getMovieById(id: String): LiveData<Movie>
+    fun getMovieById(id: String): LiveData<Movie>
 
     @Query("DELETE FROM movie_table WHERE id == :id")
     suspend fun deleteMovieById(id: String)

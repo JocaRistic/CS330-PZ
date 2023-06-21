@@ -1,30 +1,37 @@
 package rs.ac.metropolitan.projekat.repository
 
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import rs.ac.metropolitan.projekat.api.ApiService
 import rs.ac.metropolitan.projekat.api.RetrofitHelper
 import rs.ac.metropolitan.projekat.common.models.User
+import rs.ac.metropolitan.projekat.db.BazaPodataka
+import rs.ac.metropolitan.projekat.db.UserDao
 
-class RepositoryUsers {
-    var usersFlow: Flow<List<User>> = flowOf(listOf())
+class RepositoryUsers(private val userDao: UserDao) {
 
     suspend fun loadUsers(){
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
         val result = apiService.getUsers()
         if (result != null){
-            usersFlow = flowOf(result)
+            userDao.addAllUsers(result)
         }
     }
 
     suspend fun submitUser(user: User){
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
         val result = apiService.addUser(user)
+        userDao.addUser(user)
     }
 
-    suspend fun deleteUser(username: String){
+    suspend fun deleteUser(id: String){
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
-        val result = apiService.deleteUser(username)
+        val result = apiService.deleteUser(id)
+        userDao.deleteUserById(id)
+    }
+
+    suspend fun getUserFromDB(username: String): User{
+        return userDao.getUserByUsername(username)
     }
 }
