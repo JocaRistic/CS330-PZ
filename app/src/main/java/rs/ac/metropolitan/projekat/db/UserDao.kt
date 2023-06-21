@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import rs.ac.metropolitan.projekat.common.models.User
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -25,12 +24,9 @@ interface UserDao {
     @Query("SELECT * FROM user_table WHERE username == :username")
     fun getUserByUsername(username: String): User
 
-<<<<<<< HEAD
     @Query("SELECT * FROM user_table WHERE username == :username AND password == :password")
     fun getUserByUsernameAndPass(username: String, password: String): User
 
-=======
->>>>>>> 5c306112aad41453196195e8ca085da53ede2786
     @Query("DELETE FROM user_table WHERE id == :id")
     suspend fun deleteUserById(id: String)
 

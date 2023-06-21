@@ -1,12 +1,8 @@
 package rs.ac.metropolitan.projekat.repository
 
-import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import rs.ac.metropolitan.projekat.api.ApiService
 import rs.ac.metropolitan.projekat.api.RetrofitHelper
 import rs.ac.metropolitan.projekat.common.models.User
-import rs.ac.metropolitan.projekat.db.BazaPodataka
 import rs.ac.metropolitan.projekat.db.UserDao
 
 class RepositoryUsers(private val userDao: UserDao) {
@@ -31,14 +27,11 @@ class RepositoryUsers(private val userDao: UserDao) {
         userDao.deleteUserById(id)
     }
 
-    suspend fun getUserFromDB(username: String): User{
+    fun getUserFromDB(username: String): User{
         return userDao.getUserByUsername(username)
-<<<<<<< HEAD
     }
 
     fun loginUserFromDB(username: String, password: String): User{
         return userDao.getUserByUsernameAndPass(username, password)
-=======
->>>>>>> 5c306112aad41453196195e8ca085da53ede2786
     }
 }

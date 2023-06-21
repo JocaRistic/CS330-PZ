@@ -1,8 +1,6 @@
 package rs.ac.metropolitan.projekat.view.screens
 
-import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -11,7 +9,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -46,14 +43,6 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") }
-<<<<<<< HEAD
-=======
-//            keyboardOptions = KeyboardOptions(
-//                keyboardType = KeyboardType.Email
-//            ),
-//            isError = !isEmailValid(email),
-//            visualTransformation = VisualTransformation.None
->>>>>>> 5c306112aad41453196195e8ca085da53ede2786
         )
         TextField(
             value = password,
@@ -73,12 +62,9 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                 } else {
                     val user = User(email = email, password = password, username = username, role = "user", id = UUID.randomUUID().toString())
                     vm.registerUser(user)
-<<<<<<< HEAD
                     if (!vm.registrovan.value){
                         Toast.makeText(context, "Uneti username je zauzet.", Toast.LENGTH_LONG).show()
                     }
-=======
->>>>>>> 5c306112aad41453196195e8ca085da53ede2786
                 }
 
             }
