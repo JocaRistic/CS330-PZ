@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import rs.ac.metropolitan.projekat.common.models.User
 import rs.ac.metropolitan.projekat.view.AppViewModel
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,12 +37,12 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email
-            ),
-            isError = !isEmailValid(email),
-            visualTransformation = VisualTransformation.None
+            label = { Text("Email") }
+//            keyboardOptions = KeyboardOptions(
+//                keyboardType = KeyboardType.Email
+//            ),
+//            isError = !isEmailValid(email),
+//            visualTransformation = VisualTransformation.None
         )
         TextField(
             value = password,
@@ -59,8 +60,8 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                 } else if(username.length < 3){
                     registrationStatus = "Username mora imati bar 3 karaktera"
                 } else {
-                    val user = User(email = email, password = password, username = username, role = "user")
-//                    registrationStatus = vm.registerUser(user)
+                    val user = User(email = email, password = password, username = username, role = "user", id = UUID.randomUUID().toString())
+                    vm.registerUser(user)
                 }
 
             }
