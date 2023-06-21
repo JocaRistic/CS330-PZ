@@ -34,4 +34,8 @@ class RepositoryUsers(private val userDao: UserDao) {
     suspend fun getUserFromDB(username: String): User{
         return userDao.getUserByUsername(username)
     }
+
+    fun loginUserFromDB(username: String, password: String): User{
+        return userDao.getUserByUsernameAndPass(username, password)
+    }
 }

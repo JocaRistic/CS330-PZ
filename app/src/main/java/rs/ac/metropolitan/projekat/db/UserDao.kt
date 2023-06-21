@@ -25,6 +25,9 @@ interface UserDao {
     @Query("SELECT * FROM user_table WHERE username == :username")
     fun getUserByUsername(username: String): User
 
+    @Query("SELECT * FROM user_table WHERE username == :username AND password == :password")
+    fun getUserByUsernameAndPass(username: String, password: String): User
+
     @Query("DELETE FROM user_table WHERE id == :id")
     suspend fun deleteUserById(id: String)
 

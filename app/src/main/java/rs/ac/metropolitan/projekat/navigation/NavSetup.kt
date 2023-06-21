@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import rs.ac.metropolitan.projekat.view.AppViewModel
 import rs.ac.metropolitan.projekat.view.screens.HomeScreen
+import rs.ac.metropolitan.projekat.view.screens.LoginScreen
 import rs.ac.metropolitan.projekat.view.screens.RegistrationScreen
 
 @Composable
@@ -24,6 +25,9 @@ fun NavSetup(navController: NavHostController) {
         }
         composable(route = NavigationRoutes.Registration.route){
             RegistrationScreen(vm, paddingValues)
+        }
+        composable(route = NavigationRoutes.Login.route){
+            LoginScreen(vm, paddingValues)
         }
 
 

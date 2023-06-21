@@ -39,7 +39,8 @@ fun HomeScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             InternetPermission(launcher)
         } else {
 //            vm.navigateToRegistration()
-            RegistrationScreen(vm = vm, paddingValues = paddingValues)
+ //           RegistrationScreen(vm = vm, paddingValues = paddingValues)
+            LoginScreen(vm = vm, paddingValues = paddingValues)
         }
     }
 }
