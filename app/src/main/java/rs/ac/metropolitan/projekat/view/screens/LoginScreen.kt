@@ -1,5 +1,6 @@
 package rs.ac.metropolitan.projekat.view.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import rs.ac.metropolitan.projekat.db.LoggedInUser
 import rs.ac.metropolitan.projekat.view.AppViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +31,14 @@ fun LoginScreen(vm: AppViewModel, paddingValues: PaddingValues){
     var password by remember { mutableStateOf("") }
     var loginError by remember { mutableStateOf(false) }
 
+    //context
     val context = LocalContext.current
+    //scope
+    val scope = rememberCoroutineScope()
+
+//    val userLoggedInStore = LoggedInUser(context)
+//    val userLoggedIn = userLoggedInStore.isLoggedIn.collectAsState(initial = false)
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -49,7 +58,6 @@ fun LoginScreen(vm: AppViewModel, paddingValues: PaddingValues){
             visualTransformation = PasswordVisualTransformation()
         )
 
-        // Login Button
         Button(
             onClick = {
                 if (username.length < 3) {
@@ -57,7 +65,16 @@ fun LoginScreen(vm: AppViewModel, paddingValues: PaddingValues){
                 } else if(password.length <= 6){
                     loginError = true
                 } else {
-                    vm.loginUser(username, password)
+                    vm.loginUser(context, scope, username, password)
+                    if (!vm.ulogovan.value){
+                        loginError = true
+                    }
+//                    if (!userLoggedIn.value){
+//                        loginError = true
+//                    } else {
+//                        loginError = false
+//                        Toast.makeText(context, "Uspesan login", Toast.LENGTH_LONG).show()
+//                    }
                 }
 
             },
@@ -81,5 +98,6 @@ fun LoginScreen(vm: AppViewModel, paddingValues: PaddingValues){
                 .clickable { vm.navigateToRegistration() }
                 .padding(top = 16.dp)
         )
+
     }
 }

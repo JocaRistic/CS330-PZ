@@ -30,6 +30,7 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var registrationStatus by remember { mutableStateOf("") }
+    var registrationError by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -55,15 +56,20 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             onClick = {
                 if (password.length <= 6) {
                     registrationStatus = "Sifra mora biti duza od 6 karaktera"
+                    registrationError = true
                 } else if(!isEmailValid(email)){
                     registrationStatus = "Uneti email nije validan"
+                    registrationError = true
                 } else if(username.length < 3){
                     registrationStatus = "Username mora imati bar 3 karaktera"
+                    registrationError = true
                 } else {
                     val user = User(email = email, password = password, username = username, role = "user", id = UUID.randomUUID().toString())
                     vm.registerUser(user)
                     if (!vm.registrovan.value){
-                        Toast.makeText(context, "Uneti username je zauzet.", Toast.LENGTH_LONG).show()
+                        registrationStatus = "Uneti username je zauzet."
+                        registrationError = true
+                        //Toast.makeText(context, "Uneti username je zauzet.", Toast.LENGTH_LONG).show()
                     }
                 }
 
@@ -72,11 +78,13 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             Text("Register")
         }
 
-        Text(
-            text = registrationStatus,
-            color = Color.Red,
-            modifier = Modifier.padding(top = 8.dp)
-        )
+        if (registrationError){
+            Text(
+                text = registrationStatus,
+                color = Color.Red,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
     }
 }
 
