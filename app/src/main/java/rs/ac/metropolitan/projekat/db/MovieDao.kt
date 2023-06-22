@@ -11,11 +11,14 @@ import rs.ac.metropolitan.projekat.common.models.Movie
 @Dao
 interface MovieDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addAllMovies(movies: List<Movie>)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addMovie(movie: Movie)
+
     @Query("SELECT * FROM movie_table")
-    fun getAllMovies(): LiveData<List<Movie>>
+    fun getAllMovies(): List<Movie>
 
     @Query("SELECT * FROM movie_table WHERE id == :id")
     fun getMovieById(id: String): LiveData<Movie>

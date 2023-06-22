@@ -9,9 +9,10 @@ data class Movie(
     val description: String,
     val duration: String,
     val genre: String,
-    @PrimaryKey(autoGenerate = false)
     val id: String,
     val main_actor: String,
     val time: String,
-    val title: String
+    @PrimaryKey(autoGenerate = false)
+    val title: String,
+    val photo: String
 )

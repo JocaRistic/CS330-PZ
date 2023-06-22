@@ -7,15 +7,20 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import rs.ac.metropolitan.projekat.common.models.Movie
 import rs.ac.metropolitan.projekat.common.models.User
 import rs.ac.metropolitan.projekat.db.BazaPodataka
 import rs.ac.metropolitan.projekat.db.LoggedInUser
 import rs.ac.metropolitan.projekat.navigation.NavigationRoutes
+import rs.ac.metropolitan.projekat.repository.RepositoryMovies
 import rs.ac.metropolitan.projekat.repository.RepositoryUsers
 
 
@@ -24,16 +29,26 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     var granted = mutableStateOf(false)
 
     private val usersRepository: RepositoryUsers
+    private val moviesRepository: RepositoryMovies
 
     var registrovan = mutableStateOf(false)
     var ulogovan = mutableStateOf(false)
+
+    private val _movies = MutableLiveData<List<Movie>>()
+    val movies: LiveData<List<Movie>>
+        get() = _movies
 
 
     init {
         val userDao = BazaPodataka.getDatabase(application).userDao()
         usersRepository = RepositoryUsers(userDao)
+
+        val movieDao = BazaPodataka.getDatabase(application).movieDao()
+        moviesRepository = RepositoryMovies(movieDao)
+
         viewModelScope.launch(Dispatchers.IO) {
             usersRepository.loadUsers()
+            moviesRepository.loadMovies()
         }
     }
 
@@ -76,6 +91,23 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun loadMoviesfromDB() {
+        //moviesRepository.getAllMoviesFromDB()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesRepository.getAllMoviesFromDB()
+            viewModelScope.launch(Dispatchers.Main) {
+                moviesRepository.moviesFlow.collect() {
+                    _movies.value = it
+                }
+            }
+        }
+    }
+
+    fun getMovie(id: String): Movie? {
+        return _movies.value?.find { it.id == id }
+    }
+
 
     fun navigateToRegistration() {
         navController.navigate(NavigationRoutes.Registration.route)
@@ -87,6 +119,14 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun navigateToMoviesList() {
         navController.navigate(NavigationRoutes.MoviesList.route)
+    }
+
+    fun navigateToDetailMovie(id: String) {
+        navController.navigate(NavigationRoutes.MovieDetailScreen.createRoute(id))
+    }
+
+    fun goBack() {
+        navController.popBackStack()
     }
 
 }

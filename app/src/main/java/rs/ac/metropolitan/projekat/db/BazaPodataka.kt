@@ -9,7 +9,7 @@ import rs.ac.metropolitan.projekat.common.models.User
 
 @Database(
     entities = [User::class, Movie::class],
-    version = 2,
+    version = 4,
     exportSchema = false
 )
 abstract class BazaPodataka: RoomDatabase() {

@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import rs.ac.metropolitan.projekat.view.AppViewModel
 import rs.ac.metropolitan.projekat.view.screens.HomeScreen
 import rs.ac.metropolitan.projekat.view.screens.LoginScreen
+import rs.ac.metropolitan.projekat.view.screens.MovieDetailScreen
 import rs.ac.metropolitan.projekat.view.screens.MoviesListScreen
 import rs.ac.metropolitan.projekat.view.screens.RegistrationScreen
 
@@ -32,6 +33,14 @@ fun NavSetup(navController: NavHostController) {
         }
         composable(route = NavigationRoutes.MoviesList.route){
             MoviesListScreen(vm, paddingValues)
+        }
+        composable(route = NavigationRoutes.MovieDetailScreen.route) { navBackStackEntry ->
+            var movieId = navBackStackEntry.arguments?.getString("movieId")
+            if (movieId != null){
+                MovieDetailScreen(vm = vm, movieId = movieId, paddingValues = paddingValues)
+            } else {
+                Toast.makeText(navController.context, "Error, elementId is required!", Toast.LENGTH_SHORT).show()
+            }
         }
 
 
