@@ -15,20 +15,19 @@ class RepositoryMovies(private val movieDao: MovieDao) {
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
         val result = apiService.getMovies()
         if (result != null){
-//            movieDao.addAllMovies(result)
-                movieDao.deleteAndInsertAllMovies(result)
+            movieDao.addAllMovies(result)
         }
     }
 
     suspend fun submitMovie(movie: Movie){
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
-        val result = apiService.addMovie(movie)
+        apiService.addMovie(movie)
         movieDao.addMovie(movie)
     }
 
     suspend fun deleteMovie(id: String){
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
-        val result = apiService.deleteMovie(id)
+        apiService.deleteMovie(id)
         movieDao.deleteMovieById(id)
     }
 

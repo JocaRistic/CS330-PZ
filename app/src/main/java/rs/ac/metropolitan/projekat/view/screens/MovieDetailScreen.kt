@@ -1,5 +1,6 @@
 package rs.ac.metropolitan.projekat.view.screens
 
+import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -31,6 +32,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,19 +51,28 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import rs.ac.metropolitan.projekat.R
 import rs.ac.metropolitan.projekat.common.models.Movie
+import rs.ac.metropolitan.projekat.db.LoggedInUser
 import rs.ac.metropolitan.projekat.view.AppViewModel
 
 @Composable
 fun MovieDetailScreen(vm: AppViewModel, movieId: String, paddingValues: PaddingValues) {
+    //context
+    val context = LocalContext.current
     MovieDetail(
+        context = context,
         movie = vm.getMovieById(movieId),
-        goBack = { vm.goBack() }
+        goBack = { vm.goBack() },
+        delete = { vm.deleteMovieById(context, movieId) }
     )
 }
 
 @Composable
-fun MovieDetail(movie: Movie?, goBack: () -> Unit) {
+fun MovieDetail(context: Context, movie: Movie?, goBack: () -> Unit, delete: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
+
+    //check admin logged in
+    val loggedInUserStore = LoggedInUser(context)
+    val adminLoggedIn = loggedInUserStore.adminLoggedIn.collectAsState(initial = false)
 
     Card(
         elevation = CardDefaults.cardElevation(
@@ -87,17 +99,19 @@ fun MovieDetail(movie: Movie?, goBack: () -> Unit) {
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.Center)
             )
-//            IconButton(
-//                modifier = Modifier
-//                    .scale(1.5f)
-//                    .align(Alignment.BottomEnd),
-//                onClick = { delete() }) {
-//                Icon(
-//                    imageVector = Icons.Filled.Delete,
-//                    contentDescription = "Back",
-//                    tint = MaterialTheme.colorScheme.error
-//                )
-//            }
+            if (adminLoggedIn.value) {
+                IconButton(
+                    modifier = Modifier
+                        .scale(1.5f)
+                        .align(Alignment.BottomEnd),
+                    onClick = { delete() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "Delete",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         }
         movie?.let {
             Column(

@@ -32,6 +32,7 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
     var registrationStatus by remember { mutableStateOf("") }
     var registrationError by remember { mutableStateOf(false) }
 
+    //context
     val context = LocalContext.current
 
     Column {
@@ -65,7 +66,7 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                     registrationError = true
                 } else {
                     val user = User(email = email, password = password, username = username, role = "user", id = UUID.randomUUID().toString())
-                    vm.registerUser(user)
+                    vm.registerUser(context, user)
                     if (!vm.registrovan.value){
                         registrationStatus = "Uneti username je zauzet."
                         registrationError = true

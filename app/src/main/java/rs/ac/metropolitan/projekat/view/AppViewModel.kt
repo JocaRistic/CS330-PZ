@@ -52,17 +52,16 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun registerUser(user: User) {
+    fun registerUser(context: Context, user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-//            usersRepository.loadUsers()
             val postojeciUser = usersRepository.getUserFromDB(user.username)
             if (postojeciUser != null) {
                 registrovan.value = false
-                //Log.d("test", "vec postoji ${user.username}")
             } else {
                 usersRepository.submitUser(user)
                 registrovan.value = true
                 viewModelScope.launch(Dispatchers.Main){
+                    Toast.makeText(context, "Uspesna registracija", Toast.LENGTH_LONG).show()
                     navigateToLogin()
                 }
 
@@ -83,17 +82,13 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                         navigateToMoviesList()
                     }
                 }
-                Log.d("test", "ulogovan je ${user.username} ${user.role}")
             } else {
                 ulogovan.value = false
-                Log.d("test", "POGRESNI PODACI ZA LOGIN")
             }
         }
     }
 
     fun loadMoviesfromDB() {
-        //moviesRepository.getAllMoviesFromDB()
-
         viewModelScope.launch(Dispatchers.IO) {
             moviesRepository.getAllMoviesFromDB()
             viewModelScope.launch(Dispatchers.Main) {
@@ -108,6 +103,15 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         return _movies.value?.find { it.id == id }
     }
 
+    fun deleteMovieById(context: Context, id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesRepository.deleteMovie(id)
+            viewModelScope.launch(Dispatchers.Main) {
+                Toast.makeText(context, "Film je uspesno obrisan", Toast.LENGTH_LONG).show()
+                goBack()
+            }
+        }
+    }
 
     fun navigateToRegistration() {
         navController.navigate(NavigationRoutes.Registration.route)

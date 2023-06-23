@@ -46,6 +46,12 @@ class LoggedInUser(private val context: Context) {
         }
     }
 
+    val adminLoggedIn: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            val role = preferences[ROLE] ?: return@map false
+            role == "admin"
+        }
+
     val isLoggedIn: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
             val id = preferences[ID] ?: return@map false

@@ -36,10 +36,6 @@ fun LoginScreen(vm: AppViewModel, paddingValues: PaddingValues){
     //scope
     val scope = rememberCoroutineScope()
 
-//    val userLoggedInStore = LoggedInUser(context)
-//    val userLoggedIn = userLoggedInStore.isLoggedIn.collectAsState(initial = false)
-
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
