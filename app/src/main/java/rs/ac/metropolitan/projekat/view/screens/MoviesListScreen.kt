@@ -51,31 +51,25 @@ fun MoviesListScreen(vm: AppViewModel, paddingValues: PaddingValues){
     val movies = vm.movies.observeAsState()
     LaunchedEffect(vm.loadMoviesfromDB()){
     }
-
-//    LazyColumn {
-//        movies.value?.let {
-//            items(it) { movie ->
-//                MovieItem(movie = movie){
-//                    vm.navigateToDetailMovie(it)
-//                }
-//                Divider(color = Color.Gray, thickness = 1.dp)
-//            }
-//        }
-//    }
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(count = 2),
-        contentPadding = PaddingValues(8.dp)
-    ){
-        movies.value?.let {
-            items(it) {movie ->
-                MovieItem(movie = movie){
-                    vm.navigateToDetailMovie(it)
+    Column {
+        Scaffold(topBar = {
+            TopAppBar(title = { Text(text = "Movies") })
+        }) { innerPadding ->
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(count = 2),
+                contentPadding = PaddingValues(8.dp),
+                modifier = Modifier.padding(innerPadding)
+            ){
+                movies.value?.let {
+                    items(it) {movie ->
+                        MovieItem(movie = movie){
+                            vm.navigateToDetailMovie(it)
+                        }
+                    }
                 }
             }
         }
     }
-
 }
 
 @Composable
@@ -93,7 +87,7 @@ fun MovieItem(movie: Movie, onSelected: (String) -> Unit) {
         ) {
             AsyncImage(
                 model = movie.photo,
-                contentDescription = null,
+                contentDescription = movie.title,
                 modifier = Modifier
                     .size(240.dp)
                     .clip(CircleShape)

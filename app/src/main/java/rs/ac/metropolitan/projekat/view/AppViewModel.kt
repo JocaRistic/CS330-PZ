@@ -104,7 +104,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getMovie(id: String): Movie? {
+    fun getMovieById(id: String): Movie? {
         return _movies.value?.find { it.id == id }
     }
 

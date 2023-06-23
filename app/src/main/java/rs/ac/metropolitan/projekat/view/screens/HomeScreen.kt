@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import rs.ac.metropolitan.projekat.view.AppViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(vm: AppViewModel, paddingValues: PaddingValues) {
     val launcher = rememberLauncherForActivityResult(
@@ -38,8 +39,6 @@ fun HomeScreen(vm: AppViewModel, paddingValues: PaddingValues) {
         if (!vm.granted.value) {
             InternetPermission(launcher)
         } else {
-//            vm.navigateToRegistration()
- //           RegistrationScreen(vm = vm, paddingValues = paddingValues)
             LoginScreen(vm = vm, paddingValues = paddingValues)
         }
     }
