@@ -88,6 +88,12 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     // Data store
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+    // Material 3 Core
+    implementation "com.maxkeppeler.sheets-compose-dialogs:core:1.0.2"
+    // Material 3 Calendar
+    implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2"
+    // Material 3 Clock
+    implementation "com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2"
 
 
     testImplementation 'junit:junit:4.13.2'

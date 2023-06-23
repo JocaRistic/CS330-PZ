@@ -53,6 +53,14 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             visualTransformation = PasswordVisualTransformation()
         )
 
+        if (registrationError){
+            Text(
+                text = registrationStatus,
+                color = Color.Red,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+
         Button(
             onClick = {
                 if (password.length <= 6) {
@@ -65,7 +73,13 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                     registrationStatus = "Username mora imati bar 3 karaktera"
                     registrationError = true
                 } else {
-                    val user = User(email = email, password = password, username = username, role = "user", id = UUID.randomUUID().toString())
+                    val user = User(
+                        email = email,
+                        password = password,
+                        username = username,
+                        role = "user",
+                        id = UUID.randomUUID().toString()
+                    )
                     vm.registerUser(context, user)
                     if (!vm.registrovan.value){
                         registrationStatus = "Uneti username je zauzet."
@@ -77,14 +91,6 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             }
         ) {
             Text("Register")
-        }
-
-        if (registrationError){
-            Text(
-                text = registrationStatus,
-                color = Color.Red,
-                modifier = Modifier.padding(top = 8.dp)
-            )
         }
     }
 }

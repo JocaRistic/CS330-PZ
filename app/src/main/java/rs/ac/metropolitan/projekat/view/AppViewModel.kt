@@ -103,6 +103,16 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         return _movies.value?.find { it.id == id }
     }
 
+    fun addMovie(context: Context, movie: Movie) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesRepository.submitMovie(movie)
+            viewModelScope.launch(Dispatchers.Main) {
+                Toast.makeText(context, "Film je uspesno dodat", Toast.LENGTH_LONG).show()
+                goBack()
+            }
+        }
+    }
+
     fun deleteMovieById(context: Context, id: String){
         viewModelScope.launch(Dispatchers.IO) {
             moviesRepository.deleteMovie(id)
@@ -127,6 +137,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun navigateToDetailMovie(id: String) {
         navController.navigate(NavigationRoutes.MovieDetailScreen.createRoute(id))
+    }
+
+    fun navigateToAddMovie() {
+        navController.navigate(NavigationRoutes.AddMovie.route)
     }
 
     fun goBack() {

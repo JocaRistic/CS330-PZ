@@ -8,6 +8,6 @@ sealed class NavigationRoutes(val route: String) {
     object MovieDetailScreen : NavigationRoutes(route = "detailMovie/{movieId}"){
         fun createRoute(movieId : String) = "detailMovie/$movieId"
     }
-
+    object AddMovie : NavigationRoutes(route = "addMovie")
 
 }

@@ -40,6 +40,7 @@ fun HomeScreen(vm: AppViewModel, paddingValues: PaddingValues) {
             InternetPermission(launcher)
         } else {
             LoginScreen(vm = vm, paddingValues = paddingValues)
+
         }
     }
 }

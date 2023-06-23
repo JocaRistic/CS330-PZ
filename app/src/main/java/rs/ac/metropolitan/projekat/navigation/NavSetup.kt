@@ -8,7 +8,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import rs.ac.metropolitan.projekat.view.AppViewModel
+import rs.ac.metropolitan.projekat.view.screens.AddMovieScreen
 import rs.ac.metropolitan.projekat.view.screens.HomeScreen
 import rs.ac.metropolitan.projekat.view.screens.LoginScreen
 import rs.ac.metropolitan.projekat.view.screens.MovieDetailScreen
@@ -33,6 +35,9 @@ fun NavSetup(navController: NavHostController) {
         }
         composable(route = NavigationRoutes.MoviesList.route){
             MoviesListScreen(vm, paddingValues)
+        }
+        composable(route = NavigationRoutes.AddMovie.route){
+            AddMovieScreen(vm = vm, paddingValues = paddingValues)
         }
         composable(route = NavigationRoutes.MovieDetailScreen.route) { navBackStackEntry ->
             var movieId = navBackStackEntry.arguments?.getString("movieId")

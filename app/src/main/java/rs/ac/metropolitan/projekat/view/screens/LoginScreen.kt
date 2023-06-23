@@ -54,6 +54,14 @@ fun LoginScreen(vm: AppViewModel, paddingValues: PaddingValues){
             visualTransformation = PasswordVisualTransformation()
         )
 
+        if (loginError) {
+            Text(
+                text = "Invalid username or password",
+                color = Color.Red,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+
         Button(
             onClick = {
                 if (username.length < 3) {
@@ -65,26 +73,12 @@ fun LoginScreen(vm: AppViewModel, paddingValues: PaddingValues){
                     if (!vm.ulogovan.value){
                         loginError = true
                     }
-//                    if (!userLoggedIn.value){
-//                        loginError = true
-//                    } else {
-//                        loginError = false
-//                        Toast.makeText(context, "Uspesan login", Toast.LENGTH_LONG).show()
-//                    }
                 }
 
             },
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Login")
-        }
-
-        if (loginError) {
-            Text(
-                text = "Invalid username or password",
-                color = Color.Red,
-                modifier = Modifier.padding(top = 8.dp)
-            )
         }
 
         Text(
