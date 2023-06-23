@@ -1,6 +1,7 @@
 package rs.ac.metropolitan.projekat.view.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -92,6 +93,14 @@ fun RegistrationScreen(vm: AppViewModel, paddingValues: PaddingValues) {
         ) {
             Text("Register")
         }
+
+        Text(
+            text = "You have an account? Login",
+            color = Color.Blue,
+            modifier = Modifier
+                .clickable { vm.navigateToLogin() }
+                .padding(top = 16.dp)
+        )
     }
 }
 

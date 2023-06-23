@@ -15,7 +15,7 @@ class RepositoryMovies(private val movieDao: MovieDao) {
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
         val result = apiService.getMovies()
         if (result != null){
-            movieDao.addAllMovies(result)
+            movieDao.deleteAndInsertAllMovies(result)
         }
     }
 

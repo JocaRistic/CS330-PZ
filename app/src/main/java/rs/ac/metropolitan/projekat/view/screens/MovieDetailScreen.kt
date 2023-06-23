@@ -1,6 +1,7 @@
 package rs.ac.metropolitan.projekat.view.screens
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -27,10 +28,12 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -48,6 +51,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import rs.ac.metropolitan.projekat.R
 import rs.ac.metropolitan.projekat.common.models.Movie
@@ -66,13 +71,25 @@ fun MovieDetailScreen(vm: AppViewModel, movieId: String, paddingValues: PaddingV
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieDetail(context: Context, movie: Movie?, goBack: () -> Unit, delete: () -> Unit) {
+fun MovieDetail(
+    context: Context,
+    movie: Movie?,
+    goBack: () -> Unit,
+    delete: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
 
     //check admin logged in
     val loggedInUserStore = LoggedInUser(context)
     val adminLoggedIn = loggedInUserStore.adminLoggedIn.collectAsState(initial = false)
+
+    //true ukoliko treba da se prikaze dialog
+    var isReservationDialogOpen by remember { mutableStateOf(false) }
+
+    //broj karata koje je korisnik uneo za rezervaciju
+    var brojPotrebnihKarata by remember { mutableStateOf("") }
 
     Card(
         elevation = CardDefaults.cardElevation(
@@ -129,9 +146,11 @@ fun MovieDetail(context: Context, movie: Movie?, goBack: () -> Unit, delete: () 
                         .size(240.dp)
                         .clip(CircleShape)
                 )
-                Text(text = "${it.title}",
+                Text(
+                    text = "${it.title}",
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(top = 16.dp))
+                    modifier = Modifier.padding(top = 16.dp)
+                )
                 Text(
                     text = "${it.genre}",
                     color = Color.Gray,
@@ -184,11 +203,12 @@ fun MovieDetail(context: Context, movie: Movie?, goBack: () -> Unit, delete: () 
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
-                        .padding(16.dp)
-                        .clip(MaterialTheme.shapes.small)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                            .padding(16.dp)
+                            .clip(MaterialTheme.shapes.small)
                     ) {
                         Text(
                             text = "Opis filma (klik za vise): \n${it.description}",
@@ -259,10 +279,52 @@ fun MovieDetail(context: Context, movie: Movie?, goBack: () -> Unit, delete: () 
                                 Modifier.padding(start = 10.dp)
                             )
                         }
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Info o rezervaciji",
+                                textAlign = TextAlign.Center,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
+                            )
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Broj dostupnih karata:",
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "${it.broj_karata}",
+                                Modifier.padding(start = 10.dp)
+                            )
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Cena karte:",
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "${it.cena_karte}",
+                                Modifier.padding(start = 10.dp)
+                            )
+                        }
                     }
                 }
                 Button(
-                    onClick = { /* rezervacija */ },
+                    onClick = {
+                        isReservationDialogOpen = true
+                    },
                     modifier = Modifier
                         .padding(bottom = 32.dp)
                         .fillMaxWidth()
@@ -272,6 +334,53 @@ fun MovieDetail(context: Context, movie: Movie?, goBack: () -> Unit, delete: () 
                 }
             }
 
+            //ako je isReservatioDialogOpen == true prikazuje dialog
+            if (isReservationDialogOpen) {
+                Dialog(
+                    onDismissRequest = { isReservationDialogOpen = false },
+                    properties = DialogProperties(dismissOnClickOutside = false)
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 5.dp
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Text(
+                                text = "Number of Tickets",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            TextField(
+                                value = brojPotrebnihKarata,
+                                onValueChange = {
+                                    brojPotrebnihKarata = it
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Button(
+                                onClick = {
+                                    //ovde treba da pozove funkciju koja
+                                    // proverava da li ima dostupnih karata,
+                                    // ukoliko ima rezervise kartu,
+                                    // dok ukoliko nema pokaze poruku
+                                    Log.d("test", "Korisnik zeli da rezervise ${brojPotrebnihKarata.toInt()} karte")
+                                    isReservationDialogOpen = false
+                                },
+                                modifier = Modifier.align(Alignment.End)
+                            ) {
+                                Text(text = "Confirm")
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -14,5 +14,7 @@ data class Movie(
     val time: String,
     @PrimaryKey(autoGenerate = false)
     val title: String,
-    val photo: String
+    val photo: String,
+    val cena_karte: String,
+    val broj_karata: String
 )

@@ -54,6 +54,8 @@ fun AddMovieScreen(vm: AppViewModel, paddingValues: PaddingValues) {
     var duration by remember { mutableStateOf(TextFieldValue("")) }
     var description by remember { mutableStateOf(TextFieldValue("")) }
     var mainActor by remember { mutableStateOf(TextFieldValue("")) }
+    var ticketPrice by remember { mutableStateOf(TextFieldValue("")) }
+    var numberOfTickets by remember { mutableStateOf(TextFieldValue("")) }
     var date by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("") }
 
@@ -184,6 +186,27 @@ fun AddMovieScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                     Text(text = "Izaberi vreme prikazivanja")
                 }
             }
+            item {
+                TextField(
+                    value = ticketPrice,
+                    onValueChange = {
+                        ticketPrice = it
+                    },
+                    label = { Text(text = "Cena karte") },
+                    placeholder = { Text(text = "Unesite cenu karte") },
+                )
+            }
+            item {
+                TextField(
+                    value = numberOfTickets,
+                    onValueChange = {
+                        numberOfTickets = it
+                    },
+                    label = { Text(text = "Broj karata") },
+                    placeholder = { Text(text = "Unesite broj karata") },
+                )
+            }
+
             if (error){
                 item {
                     Text(
@@ -193,9 +216,10 @@ fun AddMovieScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                     )
                 }
             }
+
             item {
                 Button(onClick = {
-                    if (title.text != "" && genre.text != "" && photo.text != "" && duration.text != "" && mainActor.text != "" && description.text != "" && date != "" && time != ""){
+                    if (title.text != "" && genre.text != "" && photo.text != "" && duration.text != "" && mainActor.text != "" && description.text != "" && date != "" && time != "" && ticketPrice.text != "" && numberOfTickets.text != ""){
                         vm.addMovie(context,
                             Movie(
                                 title = title.text,
@@ -206,14 +230,16 @@ fun AddMovieScreen(vm: AppViewModel, paddingValues: PaddingValues) {
                                 description = description.text,
                                 date = date,
                                 time = time,
-                                id = UUID.randomUUID().toString()
+                                id = UUID.randomUUID().toString(),
+                                cena_karte = ticketPrice.text,
+                                broj_karata = numberOfTickets.text
                             )
                         )
                     } else {
                         error = true
                     }
                 }) {
-                    Text(text = "Submit")
+                    Text(text = "Dodaj")
                 }
             }
         }
