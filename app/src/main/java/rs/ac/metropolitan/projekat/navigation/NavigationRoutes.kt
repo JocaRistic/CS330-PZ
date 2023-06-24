@@ -10,4 +10,6 @@ sealed class NavigationRoutes(val route: String) {
     }
     object AddMovie : NavigationRoutes(route = "addMovie")
 
+    object UserTicketsList : NavigationRoutes(route = "ticketsList")
+
 }

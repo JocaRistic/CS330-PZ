@@ -19,10 +19,13 @@ interface TicketDao {
     fun getAllTickets(): List<TicketDB>
 
     @Query("SELECT * FROM ticket_table WHERE user_username == :username")
-    fun getTicketByUsername(username: String): TicketDB
+    fun getTicketsByUsername(username: String): List<TicketDB>
 
     @Query("SELECT * FROM ticket_table WHERE ticket_number == :ticketNumber")
     fun getTicketByTicketNumber(ticketNumber: String): TicketDB
+
+    @Query("DELETE FROM ticket_table WHERE ticket_number == :id")
+    suspend fun deleteTicketById(id: String)
 
     @Query("DELETE FROM ticket_table")
     suspend fun deleteAllTickets()

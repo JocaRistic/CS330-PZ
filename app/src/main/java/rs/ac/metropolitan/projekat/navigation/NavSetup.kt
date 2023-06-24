@@ -16,6 +16,7 @@ import rs.ac.metropolitan.projekat.view.screens.LoginScreen
 import rs.ac.metropolitan.projekat.view.screens.MovieDetailScreen
 import rs.ac.metropolitan.projekat.view.screens.MoviesListScreen
 import rs.ac.metropolitan.projekat.view.screens.RegistrationScreen
+import rs.ac.metropolitan.projekat.view.screens.TicketsListPage
 
 @Composable
 fun NavSetup(navController: NavHostController) {
@@ -46,6 +47,9 @@ fun NavSetup(navController: NavHostController) {
             } else {
                 Toast.makeText(navController.context, "Error, elementId is required!", Toast.LENGTH_SHORT).show()
             }
+        }
+        composable(route = NavigationRoutes.UserTicketsList.route){
+            TicketsListPage(vm = vm, paddingValues = paddingValues)
         }
 
 

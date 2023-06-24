@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -37,9 +38,14 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     var registrovan = mutableStateOf(false)
     var ulogovan = mutableStateOf(false)
 
+
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>>
         get() = _movies
+
+    private val _tickets = MutableLiveData<List<TicketDB>>()
+    val tickets: LiveData<List<TicketDB>>
+        get() = _tickets
 
 
     init {
@@ -55,7 +61,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             usersRepository.loadUsers()
             moviesRepository.loadMovies()
-//            ticketsRepository.sendTicketsToServer()
         }
     }
 
@@ -176,6 +181,27 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun loadAllTicketsForUser(context: Context, username: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            ticketsRepository.getAllTicketsByUsername(username)
+            viewModelScope.launch(Dispatchers.Main) {
+                ticketsRepository.ticketsFlow.collect() {
+                    _tickets.value = it
+                }
+            }
+        }
+    }
+
+    fun deleteTicketById(context: Context, id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            ticketsRepository.deleteTicketById(id)
+            viewModelScope.launch(Dispatchers.Main) {
+                Toast.makeText(context, "Karta je uspesno obrisana", Toast.LENGTH_LONG).show()
+                goBack()
+            }
+        }
+    }
+
     fun navigateToRegistration() {
         navController.navigate(NavigationRoutes.Registration.route)
     }
@@ -194,6 +220,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun navigateToAddMovie() {
         navController.navigate(NavigationRoutes.AddMovie.route)
+    }
+
+    fun navigateToUserTicketsList() {
+        navController.navigate(NavigationRoutes.UserTicketsList.route)
     }
 
     fun goBack() {

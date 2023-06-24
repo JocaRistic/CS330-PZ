@@ -1,6 +1,8 @@
 package rs.ac.metropolitan.projekat.repository
 
 import android.util.Log
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import rs.ac.metropolitan.projekat.api.ApiService
 import rs.ac.metropolitan.projekat.api.RetrofitHelper
 import rs.ac.metropolitan.projekat.common.models.Ticket
@@ -9,6 +11,8 @@ import rs.ac.metropolitan.projekat.db.TicketDao
 
 class RepositoryTickets(private val ticketDao: TicketDao) {
 
+    var ticketsFlow: Flow<List<TicketDB>> = flowOf(listOf())
+
     suspend fun submitTicket(ticket: TicketDB){
         val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
 
@@ -16,32 +20,22 @@ class RepositoryTickets(private val ticketDao: TicketDao) {
         ticketDao.addTicket(ticket)
     }
 
+    fun getAllTicketsByUsername(username: String) {
+        val result = ticketDao.getTicketsByUsername(username)
+        if(result != null){
+            ticketsFlow = flowOf(result)
+        }
+    }
+
+    suspend fun deleteTicketById(id: String){
+        val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
+        apiService.deleteTicket(id)
+        ticketDao.deleteTicketById(id)
+    }
+
     suspend fun deleteAllTickets(){
         ticketDao.deleteAllTickets()
     }
 
-//    suspend fun sendTicketsToServer(){
-//
-//        val tickets = ticketDao.getAllTickets()
-//        Log.d("test", "TEST ${tickets.toString()}")
-//        val listaTiketa = mutableListOf<Ticket>()
-//
-//        if (tickets != null && tickets.isNotEmpty()){
-//
-//            for (ticketDb in tickets){
-//                listaTiketa.add(
-//                    Ticket(
-//                        id = ticketDb.ticket_number,
-//                        movie_title = ticketDb.movie_title
-//                    )
-//                )
-//            }
-//
-//            val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
-//            apiService.addTickets(listaTiketa.toList())
-//
-//        }
-//
-//
-//    }
+
 }

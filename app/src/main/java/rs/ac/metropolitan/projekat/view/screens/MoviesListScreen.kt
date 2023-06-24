@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -89,10 +90,14 @@ fun MoviesListScreen(vm: AppViewModel, paddingValues: PaddingValues){
                 }
             }
         }
-    } else {
+    } else{
         Column {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(text = "Movies") })
+            }, floatingActionButton = {
+                FloatingActionButton(onClick = { vm.navigateToUserTicketsList() }) {
+                    Icon(Icons.Filled.List, contentDescription = "List tickets")
+                }
             }) { innerPadding ->
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 2),
