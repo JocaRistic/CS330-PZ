@@ -63,6 +63,34 @@
       ],
       "enabled": true,
       "responseMode": null
+    },
+    {
+      "uuid": "3775b78f-4b10-45a9-a732-09525a62a5af",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "tickets",
+      "responses": [
+        {
+          "uuid": "34015153-a6d5-44e4-a4e4-c6240bb8b784",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "5r4g",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -73,6 +101,10 @@
     {
       "type": "route",
       "uuid": "661aba3a-a7e4-4cc6-9d5e-b562ddaff824"
+    },
+    {
+      "type": "route",
+      "uuid": "3775b78f-4b10-45a9-a732-09525a62a5af"
     }
   ],
   "proxyMode": false,
@@ -120,6 +152,13 @@
       "name": "movies",
       "documentation": "",
       "value": "[\n  {\n    \"id\": \"{{faker 'datatype.uuid'}}\",\n    \"title\": \"Movie movie movie mov\",\n    \"genre\": \"Action\",\n    \"photo\": \"https://m.media-amazon.com/images/M/MV5BMjMxODI2NDM5Nl5BMl5BanBnXkFtZTgwNjgzOTk1MTI@._V1_SX300.jpg\",\n    \"duration\": \"120 minutes\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nisl massa, dictum quis ante ut, blandit vulputate libero. Nam id massa quis odio iaculis commodo eget blandit velit. Vivamus tortor orci, laoreet quis velit id, condimentum facilisis nisi. Maecenas a suscipit lacus, nec venenatis lorem. Curabitur sed quam tincidunt, iaculis orci vel, scelerisque tortor.\",\n    \"main_actor\": \"Actor 1\",\n    \"date\": \"2023-06-18\",\n    \"time\": \"19:00\",\n    \"cena_karte\": \"5$\",\n    \"broj_karata\": \"100\"\n  },\n  {\n    \"id\": \"{{faker 'datatype.uuid'}}\",\n    \"title\": \"Movie 2\",\n    \"genre\": \"Comedy\",\n    \"photo\": \"https://m.media-amazon.com/images/M/MV5BMjMxODI2NDM5Nl5BMl5BanBnXkFtZTgwNjgzOTk1MTI@._V1_SX300.jpg\",\n    \"duration\": \"90 minutes\",\n    \"description\": \"Description for Movie 2\",\n    \"main_actor\": \"Actor 2\",\n    \"date\": \"2023-06-19\",\n    \"time\": \"15:30\",\n    \"cena_karte\": \"4$\",\n    \"broj_karata\": \"50\"\n  },\n  {\n    \"id\": \"{{faker 'datatype.uuid'}}\",\n    \"title\": \"Movie 3\",\n    \"genre\": \"Drama\",\n    \"photo\": \"https://m.media-amazon.com/images/M/MV5BMjMxODI2NDM5Nl5BMl5BanBnXkFtZTgwNjgzOTk1MTI@._V1_SX300.jpg\",\n    \"duration\": \"105 minutes\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nisl massa, dictum quis ante ut, blandit vulputate libero. Nam id massa quis odio iaculis commodo eget blandit velit. Vivamus tortor orci, laoreet quis velit id, condimentum facilisis nisi. Maecenas a suscipit lacus, nec venenatis lorem. Curabitur sed quam tincidunt, iaculis orci vel, scelerisque tortor. Duis commodo dui nisl, in laoreet nibh laoreet in. Vivamus interdum nisl quis placerat commodo. Donec elementum egestas mauris, ut finibus justo euismod sed. Aliquam est mi, euismod at auctor a, consectetur ac dui. Vivamus iaculis sapien luctus tincidunt aliquam.\",\n    \"main_actor\": \"Actor 3\",\n    \"date\": \"2023-06-20\",\n    \"time\": \"20:15\",\n    \"cena_karte\": \"7$\",\n    \"broj_karata\": \"150\"\n  }\n]\n"
+    },
+    {
+      "uuid": "8167b2f3-6444-4cbc-864a-acae0840e3da",
+      "id": "5r4g",
+      "name": "tickets",
+      "documentation": "",
+      "value": "[\r\n  {\r\n    \"id\": \"test-1\",\r\n    \"movie_title\": \"Test\"\r\n  }\r\n]\r\n"
     }
   ]
 }

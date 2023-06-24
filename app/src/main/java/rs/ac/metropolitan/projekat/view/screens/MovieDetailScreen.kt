@@ -2,6 +2,7 @@ package rs.ac.metropolitan.projekat.view.screens
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -53,9 +54,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.text.isDigitsOnly
 import coil.compose.AsyncImage
 import rs.ac.metropolitan.projekat.R
 import rs.ac.metropolitan.projekat.common.models.Movie
+import rs.ac.metropolitan.projekat.common.models.User
 import rs.ac.metropolitan.projekat.db.LoggedInUser
 import rs.ac.metropolitan.projekat.view.AppViewModel
 
@@ -64,6 +67,7 @@ fun MovieDetailScreen(vm: AppViewModel, movieId: String, paddingValues: PaddingV
     //context
     val context = LocalContext.current
     MovieDetail(
+        vm = vm,
         context = context,
         movie = vm.getMovieById(movieId),
         goBack = { vm.goBack() },
@@ -74,6 +78,7 @@ fun MovieDetailScreen(vm: AppViewModel, movieId: String, paddingValues: PaddingV
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetail(
+    vm: AppViewModel,
     context: Context,
     movie: Movie?,
     goBack: () -> Unit,
@@ -84,6 +89,9 @@ fun MovieDetail(
     //check admin logged in
     val loggedInUserStore = LoggedInUser(context)
     val adminLoggedIn = loggedInUserStore.adminLoggedIn.collectAsState(initial = false)
+
+    //get logged in user
+    val userLoggedIn = loggedInUserStore.getLoggedInUser.collectAsState(initial = "")
 
     //true ukoliko treba da se prikaze dialog
     var isReservationDialogOpen by remember { mutableStateOf(false) }
@@ -330,7 +338,7 @@ fun MovieDetail(
                         .fillMaxWidth()
                         .height(56.dp)
                 ) {
-                    Text(text = "Rezervisi kartu")
+                    Text(text = "Rezervisi karte")
                 }
             }
 
@@ -352,30 +360,34 @@ fun MovieDetail(
                             modifier = Modifier.padding(16.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            Text(
-                                text = "Number of Tickets",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Bold
-                            )
                             TextField(
                                 value = brojPotrebnihKarata,
                                 onValueChange = {
                                     brojPotrebnihKarata = it
                                 },
+                                label = { Text(text = "Broj karata za rezervaciju") },
+                                placeholder = { Text(text = "Unesite broj karata") },
                                 modifier = Modifier.fillMaxWidth()
                             )
+
                             Button(
                                 onClick = {
-                                    //ovde treba da pozove funkciju koja
-                                    // proverava da li ima dostupnih karata,
-                                    // ukoliko ima rezervise kartu,
-                                    // dok ukoliko nema pokaze poruku
-                                    Log.d("test", "Korisnik zeli da rezervise ${brojPotrebnihKarata.toInt()} karte")
-                                    isReservationDialogOpen = false
+                                    if(brojPotrebnihKarata.isDigitsOnly()) {
+
+                                        vm.reserveTickets(
+                                            context,
+                                            userLoggedIn.value as User,
+                                            movie.id,
+                                            brojPotrebnihKarata.toInt()
+                                        )
+                                        isReservationDialogOpen = false
+                                    } else {
+                                        Toast.makeText(context, "Unos nije validan", Toast.LENGTH_SHORT).show()
+                                    }
                                 },
                                 modifier = Modifier.align(Alignment.End)
                             ) {
-                                Text(text = "Confirm")
+                                Text(text = "Rezervisi")
                             }
                         }
                     }

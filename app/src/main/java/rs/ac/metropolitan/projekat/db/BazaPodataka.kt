@@ -5,17 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import rs.ac.metropolitan.projekat.common.models.Movie
+import rs.ac.metropolitan.projekat.common.models.TicketDB
 import rs.ac.metropolitan.projekat.common.models.User
 
 @Database(
-    entities = [User::class, Movie::class],
-    version = 5,
+    entities = [User::class, Movie::class, TicketDB::class],
+    version = 6,
     exportSchema = false
 )
 abstract class BazaPodataka: RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun movieDao(): MovieDao
+    abstract fun ticketDao(): TicketDao
 
     companion object {
         @Volatile

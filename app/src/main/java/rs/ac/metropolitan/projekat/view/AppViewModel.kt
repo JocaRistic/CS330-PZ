@@ -16,11 +16,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import rs.ac.metropolitan.projekat.common.models.Movie
+import rs.ac.metropolitan.projekat.common.models.TicketDB
 import rs.ac.metropolitan.projekat.common.models.User
 import rs.ac.metropolitan.projekat.db.BazaPodataka
 import rs.ac.metropolitan.projekat.db.LoggedInUser
 import rs.ac.metropolitan.projekat.navigation.NavigationRoutes
 import rs.ac.metropolitan.projekat.repository.RepositoryMovies
+import rs.ac.metropolitan.projekat.repository.RepositoryTickets
 import rs.ac.metropolitan.projekat.repository.RepositoryUsers
 
 
@@ -30,6 +32,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     private val usersRepository: RepositoryUsers
     private val moviesRepository: RepositoryMovies
+    private val ticketsRepository: RepositoryTickets
 
     var registrovan = mutableStateOf(false)
     var ulogovan = mutableStateOf(false)
@@ -46,9 +49,13 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         val movieDao = BazaPodataka.getDatabase(application).movieDao()
         moviesRepository = RepositoryMovies(movieDao)
 
+        val ticketDao = BazaPodataka.getDatabase(application).ticketDao()
+        ticketsRepository = RepositoryTickets(ticketDao)
+
         viewModelScope.launch(Dispatchers.IO) {
             usersRepository.loadUsers()
             moviesRepository.loadMovies()
+//            ticketsRepository.sendTicketsToServer()
         }
     }
 
@@ -119,6 +126,52 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             viewModelScope.launch(Dispatchers.Main) {
                 Toast.makeText(context, "Film je uspesno obrisan", Toast.LENGTH_LONG).show()
                 goBack()
+            }
+        }
+    }
+
+    fun reserveTickets(
+        context: Context,
+        user: User,
+        movieId: String,
+        numberOfTickets: Int
+    ) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            var movie = getMovieById(movieId)
+            var stariBrojKarata = movie!!.broj_karata.toInt()
+
+            //provera da li ima dovoljno karata za rezervaciju
+            if (movie!!.broj_karata.toInt() >= numberOfTickets){
+
+                //smanjuju se karte na stanju za film, od trenutnog broja karata
+                //oduzima se broj rezervisanih karata
+                var noviBrojKarata = movie!!.broj_karata.toInt() - numberOfTickets
+                movie.broj_karata = noviBrojKarata.toString()
+                val updatedMovie = moviesRepository.updateMovie(movieId, movie)
+
+                //kreira se serijski broj karte i upisuje u bazu rezervisana karta
+                var brojKarte = mutableStateOf(0)
+                var serijskiBrojKarte = mutableStateOf("")
+                for (i in 0 until numberOfTickets){
+                    brojKarte.value = stariBrojKarata.toInt() - i
+                    serijskiBrojKarte.value = "${movie.title}-TIC-NUM-${brojKarte.value}"
+                    ticketsRepository.submitTicket(
+                        TicketDB(
+                            ticket_number = serijskiBrojKarte.value,
+                            movie_title = movie.title,
+                            user_username = user.username
+                        )
+                    )
+                    viewModelScope.launch(Dispatchers.Main) {
+                        Toast.makeText(context, "Uspesna rezervacija", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            } else {
+                viewModelScope.launch(Dispatchers.Main) {
+                    Toast.makeText(context, "Nema dovoljno karata!", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }

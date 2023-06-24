@@ -31,6 +31,15 @@ class RepositoryMovies(private val movieDao: MovieDao) {
         movieDao.deleteMovieById(id)
     }
 
+    suspend fun updateMovie(id: String, updatedMovie: Movie): Movie? {
+        val apiService = RetrofitHelper.getInstance().create(ApiService::class.java)
+        val movie = apiService.updateMovie(id, updatedMovie)
+        if (movie !== null){
+            movieDao.updateMovie(movie.body()!!)
+        }
+        return movie.body()
+    }
+
     fun getAllMoviesFromDB() {
         val result = movieDao.getAllMovies()
         if(result != null){

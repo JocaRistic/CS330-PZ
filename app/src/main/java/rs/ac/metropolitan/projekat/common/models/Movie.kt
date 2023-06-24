@@ -16,5 +16,5 @@ data class Movie(
     val title: String,
     val photo: String,
     val cena_karte: String,
-    val broj_karata: String
+    var broj_karata: String
 )
